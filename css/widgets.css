@@ -85,6 +85,32 @@
   font-weight: 700;
 }
 
+.three-col {
+  display: flex;
+  gap: 1em;
+  margin-top: 0.4em;
+}
+
+.three-col > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.three-col .terminal {
+  min-width: 0;
+  width: auto;
+  font-size: 0.48em;
+  min-height: 11em;
+}
+
+.col-label {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.8em;
+  color: var(--accent);
+  margin-bottom: 0.4em;
+}
+
 .terminal.wide.dense {
   font-size: 0.54em;
   margin-top: 0.8em;
