@@ -104,6 +104,10 @@ window.createContextBar = function createContextBar(containerEl, config) {
   resetBtn.textContent = "Reset";
   controls.appendChild(resetBtn);
 
+  const compactBtn = document.createElement("button");
+  compactBtn.textContent = config.compactLabel || "Compact Context";
+  controls.appendChild(compactBtn);
+
   function playNext() {
     if (playIndex >= steps.length) {
       playing = false;
@@ -138,6 +142,33 @@ window.createContextBar = function createContextBar(containerEl, config) {
   }
 
   resetBtn.addEventListener("click", reset);
+
+  // Compaction summarizes accumulated conversation turns down to a small
+  // residual footprint — it helps, but doesn't erase the cost entirely
+  // (summarizing still takes some context, and nothing is ever perfectly free).
+  function compact() {
+    if (playing) return;
+    let changed = false;
+    config.segments.forEach((seg) => {
+      if (seg.transcriptTurns) {
+        const floor = seg.compactToPct != null ? seg.compactToPct : seg.incrementPct;
+        if (state[seg.key].pct > floor) {
+          state[seg.key].pct = floor;
+          changed = true;
+        }
+      }
+    });
+    if (changed && transcriptEl) {
+      transcriptEl.innerHTML = "";
+      const p = document.createElement("p");
+      p.style.fontStyle = "italic";
+      p.textContent = "— context compacted: earlier turns summarized —";
+      transcriptEl.appendChild(p);
+    }
+    if (changed) render();
+  }
+
+  compactBtn.addEventListener("click", compact);
 
   containerEl.appendChild(wrap);
   render();
