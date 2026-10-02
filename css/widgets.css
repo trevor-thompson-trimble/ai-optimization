@@ -62,6 +62,13 @@
   font-weight: 700;
 }
 
+.footnote {
+  margin-top: 1.4em;
+  font-size: 0.55em;
+  color: #9aa0ab;
+  font-style: italic;
+}
+
 .terminal.wide.dense {
   font-size: 0.54em;
   margin-top: 0.8em;
