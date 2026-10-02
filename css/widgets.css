@@ -72,21 +72,12 @@
   text-align: left;
 }
 
-.cb-visuals {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.4em;
-}
-
 .context-bar-wrap {
-  width: 130px;
-  text-align: center;
+  margin: 0.2em 0.8em 0.6em;
 }
 
 .context-bar-readout {
-  height: 24px;
-  line-height: 24px;
-  font-size: 0.45em;
+  margin-bottom: 0.3em;
   color: #9aa0ab;
   white-space: nowrap;
 }
@@ -94,25 +85,18 @@
 .context-bar-track {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 34px;
   background: #22262f;
   border-radius: 6px;
   overflow: hidden;
   display: flex;
-  flex-direction: column-reverse;
-}
-
-.context-bar-caption {
-  margin-top: 0.4em;
-  font-size: 0.42em;
-  color: #9aa0ab;
 }
 
 .context-bar-segment {
   position: relative;
-  width: 100%;
-  height: 0%;
-  transition: height 0.5s ease;
+  height: 100%;
+  width: 0%;
+  transition: width 0.5s ease;
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -138,16 +122,50 @@
   50% { filter: brightness(1.6); }
 }
 
-.context-bar-controls {
-  display: flex;
-  gap: 0.5em;
-  flex-wrap: wrap;
-  margin-top: 0.6em;
+.context-bar-slash-btn {
+  font-family: "Consolas", "SFMono-Regular", Menlo, monospace !important;
+  color: #4fd1c5 !important;
 }
 
-.context-bar-controls button {
-  font-size: 0.45em;
-  padding: 0.4em 0.8em;
+.cb-terminal {
+  width: 700px;
+  min-width: 0;
+  margin: 0;
+  font-size: 0.42em;
+}
+
+.terminal-main {
+  display: flex;
+}
+
+.cb-terminal .terminal-body {
+  flex: 1;
+  min-width: 0;
+  height: 320px;
+  overflow-y: auto;
+  font-size: 0.95em;
+}
+
+.terminal-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0 0.8em 0.8em;
+  padding: 0.4em 0.6em;
+  border: 1px solid #3a3f4b;
+  border-radius: 6px;
+}
+
+.terminal-input-hint {
+  flex: 1;
+  color: #5d6472;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.terminal-input button {
+  font: inherit;
+  padding: 0.3em 0.8em;
   border-radius: 4px;
   border: 1px solid #444b58;
   background: #1b1e26;
@@ -155,30 +173,8 @@
   cursor: pointer;
 }
 
-.context-bar-controls button:hover {
+.terminal-input button:hover {
   border-color: #4fd1c5;
-}
-
-.context-bar-slash-btn {
-  font-family: "Consolas", "SFMono-Regular", Menlo, monospace !important;
-  color: #4fd1c5 !important;
-}
-
-.cb-terminal-wrap {
-  width: 560px;
-}
-
-.cb-terminal-wrap .terminal {
-  width: 100%;
-  min-width: 0;
-  margin: 0;
-  font-size: 0.42em;
-}
-
-.cb-terminal-wrap .terminal-body {
-  height: 340px;
-  overflow-y: auto;
-  font-size: 0.95em;
 }
 
 .terminal-reply {
@@ -213,7 +209,7 @@
 .impact-meters-wrap {
   display: flex;
   gap: 0.9em;
-  padding-top: 24px;
+  padding-top: 0;
 }
 
 .impact-meter {
@@ -229,7 +225,7 @@
 
 .impact-meter-track {
   position: relative;
-  height: 300px;
+  height: 400px;
   background: #22262f;
   border-radius: 6px;
   overflow: hidden;

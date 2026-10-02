@@ -1,6 +1,5 @@
-// Context-window widget: a vertical context bar (into containerEl) plus a fake
-// Copilot CLI terminal that drives it. Returns { reset, terminalEl }; the caller
-// places terminalEl (terminal window + controls) wherever it wants.
+// Context-window widget: a fake Copilot CLI terminal (log pane, vertical context
+// bar, and an input bar holding the controls) built into containerEl. Returns { reset }.
 window.createContextBar = function createContextBar(containerEl, config) {
   const stepDelayMs = config.stepDelayMs || 1400;
   const state = {};
@@ -20,10 +19,6 @@ window.createContextBar = function createContextBar(containerEl, config) {
   track.className = "context-bar-track";
   wrap.appendChild(track);
 
-  const caption = document.createElement("div");
-  caption.className = "context-bar-caption";
-  caption.textContent = "Context";
-  wrap.appendChild(caption);
 
   const segmentEls = {};
   config.segments.forEach((seg) => {
@@ -41,22 +36,28 @@ window.createContextBar = function createContextBar(containerEl, config) {
     segmentEls[seg.key] = el;
   });
 
-  // ---- fake CLI terminal ----
-  const terminalEl = document.createElement("div");
-  terminalEl.className = "cb-terminal-wrap";
-
+  // ---- fake CLI terminal: log pane + context bar side by side, input bar below ----
   const term = document.createElement("div");
-  term.className = "terminal";
+  term.className = "terminal cb-terminal";
   term.innerHTML =
     '<div class="terminal-bar"><span></span><span></span><span></span><em>PowerShell</em></div>';
+
+  const main = document.createElement("div");
+  main.className = "terminal-main";
   const body = document.createElement("div");
   body.className = "terminal-body";
-  term.appendChild(body);
-  terminalEl.appendChild(term);
+  main.appendChild(body);
+  term.appendChild(main);
+  term.appendChild(wrap);
 
+  // Input bar holding the controls, like the text box in the real CLI.
   const controls = document.createElement("div");
-  controls.className = "context-bar-controls";
-  terminalEl.appendChild(controls);
+  controls.className = "terminal-input";
+  const hint = document.createElement("span");
+  hint.className = "terminal-input-hint";
+  hint.innerHTML = '<span class="prompt">&gt;</span>Ask Copilot…';
+  controls.appendChild(hint);
+  term.appendChild(controls);
 
   const startBtn = document.createElement("button");
   controls.appendChild(startBtn);
@@ -100,9 +101,9 @@ window.createContextBar = function createContextBar(containerEl, config) {
 
   function render() {
     const total = Math.min(100, totalPct());
-    readout.textContent = Math.round(total) + "% full";
+    readout.textContent = "Context — " + Math.round(total) + "% full";
     config.segments.forEach((seg) => {
-      segmentEls[seg.key].style.height = state[seg.key].pct + "%";
+      segmentEls[seg.key].style.width = state[seg.key].pct + "%";
     });
     const warnThreshold = config.warnThresholdPct || 90;
     config.segments.forEach((seg) => {
@@ -237,10 +238,10 @@ window.createContextBar = function createContextBar(containerEl, config) {
 
   compactBtn.addEventListener("click", compact);
 
-  containerEl.appendChild(wrap);
+  containerEl.appendChild(term);
   showIdle();
   setLabel();
   render();
 
-  return { reset, terminalEl };
+  return { reset };
 };
