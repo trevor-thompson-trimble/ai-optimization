@@ -1,22 +1,66 @@
 .keywords {
   display: flex;
-  justify-content: space-around;
-  margin: 1.2em 0 1.5em;
+  justify-content: center;
+  gap: 1em;
+  margin: 1.2em 0 1.6em;
 }
 
 .keyword {
-  font-size: 1.6em;
+  font-size: 1.4em;
   font-weight: 700;
   color: var(--accent);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 0.35em 0;
+  width: 6em;
+  text-align: center;
 }
 
-.keywords + pre {
+.terminal {
   width: fit-content;
+  min-width: 480px;
   margin: 0 auto;
-  background: #1b1e26;
-  border-radius: 6px;
-  padding: 0.4em 1em;
-  box-shadow: none;
+  text-align: left;
+  background: #0c0c0c;
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 0.6em;
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #1f1f1f;
+}
+
+.terminal-bar span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #555;
+}
+
+.terminal-bar em {
+  margin-left: 8px;
+  font-style: normal;
+  font-size: 0.8em;
+  color: #999;
+}
+
+.terminal-body {
+  padding: 0.8em 1em;
+  color: #e6e6e6;
+  line-height: 1.6;
+}
+
+.terminal .prompt {
+  color: #4fd1c5;
+  margin-right: 0.5em;
 }
 
 .context-bar-wrap {
