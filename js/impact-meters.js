@@ -2,21 +2,23 @@ window.createImpactMeters = function createImpactMeters(containerEl) {
   const wrap = document.createElement("div");
   wrap.className = "impact-meters-wrap";
 
+  // Each curve returns the REMAINING amount (100 = full/best, 0 = depleted)
+  // for a given context-fill percentage, so every meter starts full and
+  // drains as context fills up.
   const meters = [
-    { key: "cost", label: "Cost", color: "var(--accent-2)", curve: (p) => p },
-    { key: "latency", label: "Latency", color: "var(--accent-3)", curve: (p) => p },
+    { key: "cost", label: "Cost", color: "var(--accent-2)", curve: (p) => 100 - p },
+    { key: "speed", label: "Speed", color: "var(--accent-3)", curve: (p) => 100 - p },
     {
       key: "quality",
-      label: "Quality Loss",
+      label: "Quality",
       color: "#f56565",
-      // Stays low until the bar is about half full, then accelerates —
+      // Stays near-full until the bar is about half full, then drains fast —
       // illustrates signal getting buried under accumulated context.
-      curve: (p) => (p <= 50 ? p * 0.2 : Math.min(100, 10 + (p - 50) * 1.8))
+      curve: (p) => 100 - (p <= 50 ? p * 0.2 : Math.min(100, 10 + (p - 50) * 1.8))
     }
   ];
 
   const fillEls = {};
-  const valueEls = {};
 
   meters.forEach((m) => {
     const row = document.createElement("div");
@@ -35,23 +37,16 @@ window.createImpactMeters = function createImpactMeters(containerEl) {
     track.appendChild(fill);
     row.appendChild(track);
 
-    const valueEl = document.createElement("div");
-    valueEl.className = "impact-meter-value";
-    valueEl.textContent = "0%";
-    row.appendChild(valueEl);
-
     wrap.appendChild(row);
     fillEls[m.key] = fill;
-    valueEls[m.key] = valueEl;
   });
 
   containerEl.appendChild(wrap);
 
   function update(totalPct) {
     meters.forEach((m) => {
-      const value = Math.round(m.curve(totalPct));
+      const value = Math.max(0, Math.round(m.curve(totalPct)));
       fillEls[m.key].style.width = value + "%";
-      valueEls[m.key].textContent = value + "%";
     });
   }
 

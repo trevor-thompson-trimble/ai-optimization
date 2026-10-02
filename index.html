@@ -22,6 +22,7 @@
         <h2>The Context Window</h2>
         <div id="cb-intro"></div>
         <div id="impact-meters"></div>
+        <div id="cb-transcript-slot"></div>
       </section>
 
       <section>
@@ -126,7 +127,7 @@ description: Use when the user asks to format a report.
     document.addEventListener("DOMContentLoaded", function () {
       const meters = window.createImpactMeters(document.getElementById("impact-meters"));
 
-      window.createContextBar(document.getElementById("cb-intro"), {
+      const introBar = window.createContextBar(document.getElementById("cb-intro"), {
         capacityLabel: "Context Window (~128K tokens)",
         warnThresholdPct: 90,
         startLabel: "Start Conversation",
@@ -174,6 +175,10 @@ description: Use when the user asks to format a report.
           }
         ]
       });
+
+      if (introBar.transcriptEl) {
+        document.getElementById("cb-transcript-slot").appendChild(introBar.transcriptEl);
+      }
     });
   </script>
 </body>

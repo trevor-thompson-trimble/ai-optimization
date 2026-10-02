@@ -97,7 +97,7 @@
 
 .impact-meter {
   display: grid;
-  grid-template-columns: 110px 1fr 50px;
+  grid-template-columns: 110px 1fr;
   align-items: center;
   gap: 0.6em;
   margin: 0.5em 0;
@@ -117,13 +117,7 @@
 
 .impact-meter-fill {
   height: 100%;
-  width: 0%;
+  width: 100%;
   transition: width 0.5s ease;
-}
-
-.impact-meter-value {
-  font-size: 0.4em;
-  color: #9aa0ab;
-  text-align: right;
 }
 

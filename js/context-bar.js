@@ -42,7 +42,8 @@ window.createContextBar = function createContextBar(containerEl, config) {
   if (hasTranscriptSegment) {
     transcriptEl = document.createElement("div");
     transcriptEl.className = "context-bar-transcript";
-    wrap.appendChild(transcriptEl);
+    // Not appended here — the caller places it (e.g. below other widgets)
+    // via the returned `transcriptEl` reference.
   }
 
   function totalPct() {
@@ -141,5 +142,5 @@ window.createContextBar = function createContextBar(containerEl, config) {
   containerEl.appendChild(wrap);
   render();
 
-  return { reset };
+  return { reset, transcriptEl };
 };
