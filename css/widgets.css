@@ -1,3 +1,15 @@
+.keywords {
+  display: flex;
+  justify-content: space-around;
+  margin: 1.2em 0 1.5em;
+}
+
+.keyword {
+  font-size: 1.6em;
+  font-weight: 700;
+  color: var(--accent);
+}
+
 .context-bar-wrap {
   width: 100%;
   max-width: 900px;
