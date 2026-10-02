@@ -73,9 +73,3 @@
 .context-bar-transcript p {
   margin: 0.2em 0;
 }
-
-.contrast-row {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5em;
-}

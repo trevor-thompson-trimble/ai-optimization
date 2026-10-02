@@ -31,7 +31,7 @@ window.createContextBar = function createContextBar(containerEl, config) {
   wrap.appendChild(controls);
 
   let transcriptEl = null;
-  const hasTranscriptSegment = config.segments.some((s) => s.transcriptLines);
+  const hasTranscriptSegment = config.segments.some((s) => s.transcriptTurns);
   if (hasTranscriptSegment) {
     transcriptEl = document.createElement("div");
     transcriptEl.className = "context-bar-transcript";
@@ -60,11 +60,14 @@ window.createContextBar = function createContextBar(containerEl, config) {
     if (s.clicks >= maxClicks) return;
     s.clicks += 1;
     s.pct = Math.min(100, s.pct + seg.incrementPct);
-    if (seg.transcriptLines && transcriptEl) {
-      const idx = Math.min(s.clicks - 1, seg.transcriptLines.length - 1);
-      const line = document.createElement("p");
-      line.textContent = seg.transcriptLines[idx];
-      transcriptEl.appendChild(line);
+    if (seg.transcriptTurns && transcriptEl) {
+      const idx = Math.min(s.clicks - 1, seg.transcriptTurns.length - 1);
+      const turn = seg.transcriptTurns[idx];
+      turn.forEach((line) => {
+        const p = document.createElement("p");
+        p.textContent = line;
+        transcriptEl.appendChild(p);
+      });
       transcriptEl.scrollTop = transcriptEl.scrollHeight;
     }
     render();
