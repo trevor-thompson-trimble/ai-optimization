@@ -100,8 +100,13 @@ window.createContextBar = function createContextBar(containerEl, config) {
   startBtn.textContent = config.startLabel || "Start Conversation";
   controls.appendChild(startBtn);
 
+  const sep = document.createElement("span");
+  sep.className = "context-bar-sep";
+  sep.textContent = "//";
+  controls.appendChild(sep);
+
   const resetBtn = document.createElement("button");
-  resetBtn.textContent = "Reset";
+  resetBtn.textContent = "Clear";
   controls.appendChild(resetBtn);
 
   const compactBtn = document.createElement("button");

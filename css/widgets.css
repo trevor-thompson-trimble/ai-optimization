@@ -72,6 +72,14 @@
   border-color: #4fd1c5;
 }
 
+.context-bar-sep {
+  display: flex;
+  align-items: center;
+  color: #444b58;
+  font-size: 0.45em;
+  padding: 0 0.2em;
+}
+
 .context-bar-transcript {
   margin-top: 0.6em;
   max-height: 140px;
