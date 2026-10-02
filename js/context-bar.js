@@ -101,7 +101,7 @@ window.createContextBar = function createContextBar(containerEl, config) {
 
   function render() {
     const total = Math.min(100, totalPct());
-    readout.textContent = "Context — " + Math.round(total) + "% full";
+    readout.textContent = "Context window — " + Math.round(total) + "% full";
     config.segments.forEach((seg) => {
       segmentEls[seg.key].style.width = state[seg.key].pct + "%";
     });
@@ -234,9 +234,26 @@ window.createContextBar = function createContextBar(containerEl, config) {
     addRow("● Summarizing conversation history…", "terminal-log");
     addRow("✓ Conversation compacted", "terminal-reply");
     render();
+    term.classList.add("flash");
+    setTimeout(() => term.classList.remove("flash"), 700);
   }
 
   compactBtn.addEventListener("click", compact);
+
+  // Shortcuts (only on this slide): Space = play/pause, C = /compact, R = /clear.
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.ctrlKey || e.metaKey || e.altKey || !term.closest("section.present")) return;
+      const k = e.key.toLowerCase();
+      const action = { " ": () => startBtn.click(), c: compact, r: () => resetBtn.click() }[k];
+      if (!action) return;
+      e.preventDefault();
+      e.stopPropagation();
+      action();
+    },
+    true
+  );
 
   containerEl.appendChild(term);
   showIdle();
