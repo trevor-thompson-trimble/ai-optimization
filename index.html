@@ -135,19 +135,27 @@ description: Use when the user asks to format a report.
             maxClicks: 1
           },
           {
+            key: "agentsmd",
+            label: "Load AGENTS.md",
+            color: "var(--accent-4)",
+            tooltip: "Repo-level instructions the agent always reads",
+            incrementPct: 15,
+            maxClicks: 1
+          },
+          {
             key: "repo",
             label: "Add Repo Context",
             color: "var(--accent)",
             tooltip: "Files, repo structure, relevant code",
-            incrementPct: 25,
+            incrementPct: 20,
             maxClicks: 1
           },
           {
             key: "conversation",
-            label: "Simulate Conversation",
+            label: "Conversation",
             color: "var(--accent-2)",
             tooltip: "Chat turns accumulating",
-            incrementPct: 12,
+            incrementPct: 9,
             maxClicks: 5,
             transcriptTurns: [
               ["User: Can you fix this bug?", "Assistant: Sure, looking at the file now... fixed it."],
