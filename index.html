@@ -44,34 +44,36 @@
       </section>
 
       <section>
-        <h2>AGENTS.md &amp; Skills</h2>
-        <div class="two-col">
-          <div>
-            <div class="keyword">Always on</div>
-            <div class="terminal">
-              <div class="terminal-bar"><span></span><span></span><span></span><em>AGENTS.md</em></div>
-              <div class="terminal-body">
-                <div><span class="prompt">#</span>Project rules</div>
-                <div>- Build: npm run build</div>
-                <div>- Tests: npm test</div>
-                <div>- Style: no default exports</div>
-                <div>- Never edit /generated</div>
-              </div>
-            </div>
+        <h2>AGENTS.md</h2>
+        <ul>
+          <li>Instructions your agent reads <strong>every session</strong></li>
+        </ul>
+        <div class="terminal wide">
+          <div class="terminal-bar"><span></span><span></span><span></span><em>AGENTS.md</em></div>
+          <div class="terminal-body">
+            <div><span class="prompt">-</span>Be concise. No fluff.</div>
+            <div><span class="prompt">-</span>Strict scope: only what's asked. Ask before extras.</div>
+            <div><span class="prompt">-</span>Read-only unless explicitly told to edit.</div>
+            <div><span class="prompt">-</span>Honest critique. Don't just agree.</div>
+            <div><span class="prompt">-</span>TDD: tests before implementation.</div>
           </div>
-          <div>
-            <div class="keyword">On demand</div>
-            <div class="terminal">
-              <div class="terminal-bar"><span></span><span></span><span></span><em>.copilot/skills/report/SKILL.md</em></div>
-              <div class="terminal-body">
-                <div>---</div>
-                <div>name: report</div>
-                <div>description: format a report</div>
-                <div>---</div>
-                <div><span class="prompt">1.</span>Read the input file</div>
-                <div><span class="prompt">2.</span>Apply the template</div>
-              </div>
-            </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>SKILL.md</h2>
+        <ul>
+          <li>A reusable capability, loaded <strong>on demand</strong></li>
+        </ul>
+        <div class="terminal wide">
+          <div class="terminal-bar"><span></span><span></span><span></span><em>.copilot/skills/report/SKILL.md</em></div>
+          <div class="terminal-body">
+            <div>---</div>
+            <div>name: report</div>
+            <div>description: format a report</div>
+            <div>---</div>
+            <div><span class="prompt">1.</span>Read the input file</div>
+            <div><span class="prompt">2.</span>Apply the template</div>
           </div>
         </div>
       </section>

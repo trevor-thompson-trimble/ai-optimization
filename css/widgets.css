@@ -34,6 +34,12 @@
   font-size: 1em;
 }
 
+.terminal.wide {
+  width: 90%;
+  font-size: 0.62em;
+  margin-top: 1.5em;
+}
+
 .two-col .terminal {
   min-width: 0;
   width: auto;
