@@ -69,6 +69,22 @@
   font-style: italic;
 }
 
+.chips {
+  display: flex;
+  justify-content: center;
+  gap: 0.8em;
+  margin-top: 1.4em;
+  font-size: 0.7em;
+}
+
+.chips span {
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  padding: 0.15em 1em;
+  font-weight: 700;
+}
+
 .terminal.wide.dense {
   font-size: 0.54em;
   margin-top: 0.8em;
