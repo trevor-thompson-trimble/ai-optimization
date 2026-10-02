@@ -2,11 +2,10 @@ window.createImpactMeters = function createImpactMeters(containerEl) {
   const wrap = document.createElement("div");
   wrap.className = "impact-meters-wrap";
 
-  // Each curve returns the REMAINING amount (100 = full/best, 0 = depleted)
-  // for a given context-fill percentage, so every meter starts full and
-  // drains as context fills up.
+  // Cost grows as context fills (starts empty, fills up — you're spending
+  // more). Speed and Quality start full and drain as context fills up.
   const meters = [
-    { key: "cost", label: "Cost", color: "var(--accent-2)", curve: (p) => 100 - p },
+    { key: "cost", label: "Cost", color: "var(--accent-2)", curve: (p) => p },
     { key: "speed", label: "Speed", color: "var(--accent-3)", curve: (p) => 100 - p },
     {
       key: "quality",
