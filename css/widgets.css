@@ -16,10 +16,24 @@
 }
 
 .context-bar-segment {
+  position: relative;
   height: 100%;
   width: 0%;
   transition: width 0.5s ease;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.context-bar-seg-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 600;
+  color: #10131a;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .context-bar-segment.warn {
@@ -73,3 +87,43 @@
 .context-bar-transcript p {
   margin: 0.2em 0;
 }
+
+.impact-meters-wrap {
+  width: 100%;
+  max-width: 900px;
+  margin: 1.2em auto 0;
+  text-align: left;
+}
+
+.impact-meter {
+  display: grid;
+  grid-template-columns: 110px 1fr 50px;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0.5em 0;
+}
+
+.impact-meter-label {
+  font-size: 0.42em;
+  color: #9aa0ab;
+}
+
+.impact-meter-track {
+  height: 16px;
+  background: #22262f;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.impact-meter-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+.impact-meter-value {
+  font-size: 0.4em;
+  color: #9aa0ab;
+  text-align: right;
+}
+

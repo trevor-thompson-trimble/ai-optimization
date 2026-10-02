@@ -1,4 +1,5 @@
 window.createContextBar = function createContextBar(containerEl, config) {
+  const stepDelayMs = config.stepDelayMs || 1200;
   const state = {};
   config.segments.forEach((seg) => {
     state[seg.key] = { pct: 0, clicks: 0 };
@@ -22,6 +23,12 @@ window.createContextBar = function createContextBar(containerEl, config) {
     el.className = "context-bar-segment";
     el.style.background = seg.color;
     el.title = seg.tooltip || seg.label;
+
+    const labelSpan = document.createElement("span");
+    labelSpan.className = "context-bar-seg-label";
+    labelSpan.textContent = seg.label;
+    el.appendChild(labelSpan);
+
     track.appendChild(el);
     segmentEls[seg.key] = el;
   });
@@ -52,12 +59,15 @@ window.createContextBar = function createContextBar(containerEl, config) {
     config.segments.forEach((seg) => {
       segmentEls[seg.key].classList.toggle("warn", total >= warnThreshold);
     });
+    if (typeof config.onUpdate === "function") {
+      config.onUpdate(total);
+    }
   }
 
-  function addClick(seg) {
+  function applyStep(seg) {
     const s = state[seg.key];
-    const maxClicks = seg.maxClicks || 1;
-    if (s.clicks >= maxClicks) return;
+    const maxSteps = seg.maxClicks || 1;
+    if (s.clicks >= maxSteps) return;
     s.clicks += 1;
     s.pct = Math.min(100, s.pct + seg.incrementPct);
     if (seg.transcriptTurns && transcriptEl) {
@@ -73,25 +83,60 @@ window.createContextBar = function createContextBar(containerEl, config) {
     render();
   }
 
+  // Flatten segments into an ordered step queue (a segment with maxClicks > 1
+  // — e.g. conversation turns — contributes one step per click/turn).
+  const steps = [];
   config.segments.forEach((seg) => {
-    const btn = document.createElement("button");
-    btn.textContent = seg.label;
-    btn.addEventListener("click", () => addClick(seg));
-    controls.appendChild(btn);
+    const n = seg.maxClicks || 1;
+    for (let i = 0; i < n; i++) steps.push(seg);
   });
+
+  let playIndex = 0;
+  let playing = false;
+  let playTimer = null;
+
+  const startBtn = document.createElement("button");
+  startBtn.textContent = config.startLabel || "Start Conversation";
+  controls.appendChild(startBtn);
 
   const resetBtn = document.createElement("button");
   resetBtn.textContent = "Reset";
-  resetBtn.addEventListener("click", reset);
   controls.appendChild(resetBtn);
 
+  function playNext() {
+    if (playIndex >= steps.length) {
+      playing = false;
+      startBtn.disabled = false;
+      startBtn.textContent = config.startLabel || "Start Conversation";
+      return;
+    }
+    applyStep(steps[playIndex]);
+    playIndex++;
+    playTimer = setTimeout(playNext, stepDelayMs);
+  }
+
+  startBtn.addEventListener("click", () => {
+    if (playing) return;
+    playing = true;
+    startBtn.disabled = true;
+    startBtn.textContent = "Playing…";
+    playNext();
+  });
+
   function reset() {
+    if (playTimer) clearTimeout(playTimer);
+    playing = false;
+    playIndex = 0;
+    startBtn.disabled = false;
+    startBtn.textContent = config.startLabel || "Start Conversation";
     config.segments.forEach((seg) => {
       state[seg.key] = { pct: 0, clicks: 0 };
     });
     if (transcriptEl) transcriptEl.innerHTML = "";
     render();
   }
+
+  resetBtn.addEventListener("click", reset);
 
   containerEl.appendChild(wrap);
   render();
