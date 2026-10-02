@@ -10,6 +10,15 @@
   color: var(--accent);
 }
 
+.keywords + pre {
+  width: fit-content;
+  margin: 0 auto;
+  background: #1b1e26;
+  border-radius: 6px;
+  padding: 0.4em 1em;
+  box-shadow: none;
+}
+
 .context-bar-wrap {
   width: 100%;
   max-width: 900px;
