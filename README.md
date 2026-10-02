@@ -8,7 +8,7 @@ Presentation on AI workflows for software engineers.
 
 | Skill | What it does |
 |-------|--------------|
-| ponytail | Forces the simplest, smallest solution. Fights over-engineering. |
+| [ponytail](https://github.com/dietrichgebert/ponytail) | Forces the simplest, smallest solution. Fights over-engineering. |
 | grill-me | Interviews you relentlessly about a plan until the gaps are exposed. |
 | brainstorming | Explores intent and design before any code is written. |
 | writing-plans | Turns a spec into bite-sized, step-by-step implementation tasks. |
