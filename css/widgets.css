@@ -216,22 +216,33 @@
 }
 
 .impact-meters-wrap {
-  width: 200px;
+  width: 220px;
+  flex-shrink: 0;
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 0.42em;
+  text-align: left;
   align-self: stretch;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 1.6em;
-  padding: 1em 1.1em;
+  overflow: hidden;
   background: #0c0c0c;
   border: 1px solid #333;
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
+.impact-meters-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.4em;
+  padding: 1em 1.1em;
+}
+
 .impact-meter-label {
   margin-bottom: 0.4em;
-  font-size: 0.5em;
+  font-size: 1.2em;
   font-weight: 600;
   color: #cfd3dc;
 }

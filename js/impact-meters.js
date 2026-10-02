@@ -21,6 +21,15 @@ window.createImpactMeters = function createImpactMeters(containerEl) {
 
   const fillEls = {};
 
+  const bar = document.createElement("div");
+  bar.className = "terminal-bar";
+  bar.innerHTML = "<span></span><span></span><span></span><em>Impact</em>";
+  wrap.appendChild(bar);
+
+  const body = document.createElement("div");
+  body.className = "impact-meters-body";
+  wrap.appendChild(body);
+
   meters.forEach((m) => {
     const row = document.createElement("div");
     row.className = "impact-meter";
@@ -38,7 +47,7 @@ window.createImpactMeters = function createImpactMeters(containerEl) {
     track.appendChild(fill);
     row.appendChild(track);
 
-    wrap.appendChild(row);
+    body.appendChild(row);
     fillEls[m.key] = fill;
   });
 
