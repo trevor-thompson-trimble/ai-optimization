@@ -113,7 +113,6 @@ window.createContextBar = function createContextBar(containerEl, config) {
   function playNext() {
     if (playIndex >= steps.length) {
       playing = false;
-      startBtn.disabled = false;
       startBtn.textContent = config.startLabel || "New Conversation";
       return;
     }
@@ -122,11 +121,17 @@ window.createContextBar = function createContextBar(containerEl, config) {
     playTimer = setTimeout(playNext, stepDelayMs);
   }
 
+  // One button: start / pause / resume (restarts cleanly after a finished run).
   startBtn.addEventListener("click", () => {
-    if (playing) return;
+    if (playing) {
+      clearTimeout(playTimer);
+      playing = false;
+      startBtn.textContent = "Resume";
+      return;
+    }
+    if (playIndex >= steps.length) reset();
     playing = true;
-    startBtn.disabled = true;
-    startBtn.textContent = "Playing…";
+    startBtn.textContent = "Pause";
     playNext();
   });
 
