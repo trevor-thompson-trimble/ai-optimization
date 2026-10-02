@@ -1,0 +1,26 @@
+:root {
+  --r-background-color: #15181f;
+  --r-main-color: #e8e9ed;
+  --r-heading-color: #e8e9ed;
+  --r-link-color: #4fd1c5;
+  --accent: #4fd1c5;
+  --accent-2: #f6ad55;
+  --accent-3: #7f9cf5;
+}
+
+.reveal, .reveal h1, .reveal h2, .reveal h3 {
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+.reveal code, .reveal pre, .reveal .mono {
+  font-family: "Consolas", "SFMono-Regular", Menlo, monospace;
+}
+
+.reveal .subtitle {
+  color: #9aa0ab;
+  font-size: 0.6em;
+}
+
+.reveal ul li {
+  margin: 0.4em 0;
+}

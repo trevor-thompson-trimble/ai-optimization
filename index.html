@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Workflows</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/widgets.css" />
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h1>AI Workflows</h1>
+        <p class="subtitle">Context windows, CLI agents, skills, and MCP servers</p>
+      </section>
+
+      <section>
+        <h2>The Context Window</h2>
+        <div id="cb-intro"></div>
+      </section>
+
+      <section>
+        <h2>Context Window vs. Token Limit</h2>
+        <p class="mono subtitle">Context window = active working slice. Token limit = total session budget.</p>
+        <div class="contrast-row">
+          <div id="cb-contrast-window"></div>
+          <div id="cb-contrast-limit"></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Why the CLI</h2>
+        <ul>
+          <li>Direct, unabstracted access to your actual files</li>
+          <li>Lighter harness — less overhead between you and the model</li>
+          <li>Skills and agent files aren't hidden behind an IDE plugin layer</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Installing the CLI</h2>
+        <pre class="mono"><code>npm install -g @github/copilot
+copilot
+</code></pre>
+        <p class="subtitle">(Presenter: walk through actual install steps live)</p>
+      </section>
+
+      <section>
+        <h2>AGENTS.md &amp; SKILL.md</h2>
+        <ul>
+          <li><code>AGENTS.md</code> — repo-level instructions the agent always reads</li>
+          <li><code>SKILL.md</code> — a packaged, reusable capability the agent can load on demand</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Example Layout</h2>
+        <pre class="mono"><code>repo/
+  AGENTS.md
+  .copilot/
+    skills/
+      my-skill/
+        SKILL.md
+        scripts/
+          helper.py
+</code></pre>
+      </section>
+
+      <section>
+        <h2>Example SKILL.md</h2>
+        <pre class="mono"><code>---
+name: my-skill
+description: Use when the user asks to format a report.
+---
+
+# My Skill
+
+1. Read the input file.
+2. Apply the report template.
+3. Write the output next to the input.
+</code></pre>
+      </section>
+
+      <section>
+        <h2>Creating Your Own Skills</h2>
+        <ul>
+          <li>Start from a real, repeated task you do with the agent</li>
+          <li>Write the steps down as a short SKILL.md</li>
+          <li>Refine after watching the agent actually use it</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Finding Skills Online</h2>
+        <ul>
+          <li>Public skill repositories (e.g. community GitHub repos)</li>
+          <li>Copy, read, and adapt — don't trust blindly</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Useful MCP Servers</h2>
+        <ul>
+          <li>GitHub — issues, PRs, repo search</li>
+          <li>Browser/web fetch — pulling live docs or pages into context</li>
+          <li>Project-specific servers (databases, ticketing, internal tools)</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="js/context-bar.js"></script>
+  <script>
+    Reveal.initialize({ hash: true, controls: true, progress: true });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      window.createContextBar(document.getElementById("cb-intro"), {
+        capacityLabel: "Context Window (~128K tokens)",
+        warnThresholdPct: 90,
+        segments: [
+          {
+            key: "harness",
+            label: "Load Harness",
+            color: "var(--accent-3)",
+            tooltip: "System prompt, tool definitions, instructions",
+            incrementPct: 20,
+            maxClicks: 1
+          },
+          {
+            key: "repo",
+            label: "Add Repo Context",
+            color: "var(--accent)",
+            tooltip: "Files, repo structure, relevant code",
+            incrementPct: 25,
+            maxClicks: 1
+          },
+          {
+            key: "conversation",
+            label: "Simulate Conversation",
+            color: "var(--accent-2)",
+            tooltip: "Chat turns accumulating",
+            incrementPct: 10,
+            maxClicks: 6,
+            transcriptLines: [
+              "User: Can you fix this bug?",
+              "Assistant: Sure, looking at the file now...",
+              "User: Also add a test.",
+              "Assistant: Added a test and verified it passes.",
+              "User: Can you refactor this too?",
+              "Assistant: Done — refactored and re-ran tests."
+            ]
+          }
+        ]
+      });
+
+      window.createContextBar(document.getElementById("cb-contrast-window"), {
+        capacityLabel: "Context Window (~128K tokens)",
+        warnThresholdPct: 90,
+        segments: [
+          { key: "filled", label: "Fill to 90%", color: "var(--accent-2)", incrementPct: 90, maxClicks: 1 }
+        ]
+      });
+
+      window.createContextBar(document.getElementById("cb-contrast-limit"), {
+        capacityLabel: "Token Limit (~2M tokens / session)",
+        warnThresholdPct: 90,
+        segments: [
+          { key: "used", label: "Show usage so far", color: "var(--accent-3)", incrementPct: 5, maxClicks: 1 }
+        ]
+      });
+    });
+  </script>
+</body>
+</html>
