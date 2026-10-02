@@ -97,7 +97,7 @@ window.createContextBar = function createContextBar(containerEl, config) {
   let playTimer = null;
 
   const startBtn = document.createElement("button");
-  startBtn.textContent = config.startLabel || "Start Conversation";
+  startBtn.textContent = config.startLabel || "New Conversation";
   controls.appendChild(startBtn);
 
   const resetBtn = document.createElement("button");
@@ -114,7 +114,7 @@ window.createContextBar = function createContextBar(containerEl, config) {
     if (playIndex >= steps.length) {
       playing = false;
       startBtn.disabled = false;
-      startBtn.textContent = config.startLabel || "Start Conversation";
+      startBtn.textContent = config.startLabel || "New Conversation";
       return;
     }
     applyStep(steps[playIndex]);
@@ -135,9 +135,14 @@ window.createContextBar = function createContextBar(containerEl, config) {
     playing = false;
     playIndex = 0;
     startBtn.disabled = false;
-    startBtn.textContent = config.startLabel || "Start Conversation";
+    startBtn.textContent = config.startLabel || "New Conversation";
     config.segments.forEach((seg) => {
-      state[seg.key] = { pct: 0, clicks: 0 };
+      // Segments marked persistOnClear (e.g. the harness, AGENTS.md) stay
+      // loaded — a new conversation still starts with that baseline context
+      // already in place, it isn't re-earned from zero.
+      if (!seg.persistOnClear) {
+        state[seg.key] = { pct: 0, clicks: 0 };
+      }
     });
     if (transcriptEl) transcriptEl.innerHTML = "";
     render();

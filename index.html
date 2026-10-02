@@ -130,7 +130,7 @@ description: Use when the user asks to format a report.
       const introBar = window.createContextBar(document.getElementById("cb-intro"), {
         capacityLabel: "Context Window (~128K tokens)",
         warnThresholdPct: 90,
-        startLabel: "Start Conversation",
+        startLabel: "New Conversation",
         stepDelayMs: 1400,
         onUpdate: (totalPct) => meters.update(totalPct),
         segments: [
@@ -140,7 +140,8 @@ description: Use when the user asks to format a report.
             color: "var(--accent-3)",
             tooltip: "System prompt, tool definitions, instructions",
             incrementPct: 20,
-            maxClicks: 1
+            maxClicks: 1,
+            persistOnClear: true
           },
           {
             key: "agentsmd",
@@ -148,7 +149,8 @@ description: Use when the user asks to format a report.
             color: "var(--accent-4)",
             tooltip: "Repo-level instructions the agent always reads",
             incrementPct: 15,
-            maxClicks: 1
+            maxClicks: 1,
+            persistOnClear: true
           },
           {
             key: "repo",

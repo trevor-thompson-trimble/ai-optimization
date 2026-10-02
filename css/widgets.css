@@ -89,6 +89,10 @@
   text-align: left;
 }
 
+.context-bar-transcript:empty {
+  display: none;
+}
+
 .context-bar-transcript p {
   margin: 0.2em 0;
 }
