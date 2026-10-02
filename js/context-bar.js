@@ -1,21 +1,29 @@
+// Context-window widget: a vertical context bar (into containerEl) plus a fake
+// Copilot CLI terminal that drives it. Returns { reset, terminalEl }; the caller
+// places terminalEl (terminal window + controls) wherever it wants.
 window.createContextBar = function createContextBar(containerEl, config) {
-  const stepDelayMs = config.stepDelayMs || 1200;
+  const stepDelayMs = config.stepDelayMs || 1400;
   const state = {};
   config.segments.forEach((seg) => {
     state[seg.key] = { pct: 0, clicks: 0 };
   });
 
+  // ---- context bar (vertical, fills from the bottom) ----
   const wrap = document.createElement("div");
   wrap.className = "context-bar-wrap";
 
-  const label = document.createElement("div");
-  label.className = "context-bar-readout";
-  label.textContent = config.capacityLabel + " — 0% full";
-  wrap.appendChild(label);
+  const readout = document.createElement("div");
+  readout.className = "context-bar-readout";
+  wrap.appendChild(readout);
 
   const track = document.createElement("div");
   track.className = "context-bar-track";
   wrap.appendChild(track);
+
+  const caption = document.createElement("div");
+  caption.className = "context-bar-caption";
+  caption.textContent = "Context";
+  wrap.appendChild(caption);
 
   const segmentEls = {};
   config.segments.forEach((seg) => {
@@ -33,81 +41,24 @@ window.createContextBar = function createContextBar(containerEl, config) {
     segmentEls[seg.key] = el;
   });
 
+  // ---- fake CLI terminal ----
+  const terminalEl = document.createElement("div");
+  terminalEl.className = "cb-terminal-wrap";
+
+  const term = document.createElement("div");
+  term.className = "terminal";
+  term.innerHTML =
+    '<div class="terminal-bar"><span></span><span></span><span></span><em>PowerShell</em></div>';
+  const body = document.createElement("div");
+  body.className = "terminal-body";
+  term.appendChild(body);
+  terminalEl.appendChild(term);
+
   const controls = document.createElement("div");
   controls.className = "context-bar-controls";
-  wrap.appendChild(controls);
-
-  let transcriptEl = null; // outer terminal window, placed by the caller
-  let transcriptBody = null; // where lines are appended
-  const hasTranscriptSegment = config.segments.some((s) => s.transcriptTurns);
-  if (hasTranscriptSegment) {
-    transcriptEl = document.createElement("div");
-    transcriptEl.className = "terminal context-bar-transcript";
-    transcriptEl.innerHTML =
-      '<div class="terminal-bar"><span></span><span></span><span></span><em>copilot</em></div>';
-    transcriptBody = document.createElement("div");
-    transcriptBody.className = "terminal-body";
-    transcriptEl.appendChild(transcriptBody);
-  }
-
-  function totalPct() {
-    return Object.values(state).reduce((sum, s) => sum + s.pct, 0);
-  }
-
-  function render() {
-    const total = Math.min(100, totalPct());
-    label.textContent = config.capacityLabel + " — " + Math.round(total) + "% full";
-    config.segments.forEach((seg) => {
-      segmentEls[seg.key].style.width = state[seg.key].pct + "%";
-    });
-    const warnThreshold = config.warnThresholdPct || 90;
-    config.segments.forEach((seg) => {
-      segmentEls[seg.key].classList.toggle("warn", total >= warnThreshold);
-    });
-    if (typeof config.onUpdate === "function") {
-      config.onUpdate(total);
-    }
-  }
-
-  function applyStep(seg) {
-    const s = state[seg.key];
-    const maxSteps = seg.maxClicks || 1;
-    if (s.clicks >= maxSteps) return;
-    s.clicks += 1;
-    s.pct = Math.min(100, s.pct + seg.incrementPct);
-    if (seg.transcriptTurns && transcriptBody) {
-      const idx = Math.min(s.clicks - 1, seg.transcriptTurns.length - 1);
-      const turn = seg.transcriptTurns[idx];
-      turn.forEach((line) => {
-        const row = document.createElement("div");
-        if (line.startsWith("User: ")) {
-          row.innerHTML = '<span class="prompt">&gt;</span> ';
-          row.appendChild(document.createTextNode(line.slice(6)));
-        } else {
-          row.className = "terminal-reply";
-          row.textContent = line.replace(/^Assistant: /, "");
-        }
-        transcriptBody.appendChild(row);
-      });
-      transcriptBody.scrollTop = transcriptBody.scrollHeight;
-    }
-    render();
-  }
-
-  // Flatten segments into an ordered step queue (a segment with maxClicks > 1
-  // — e.g. conversation turns — contributes one step per click/turn).
-  const steps = [];
-  config.segments.forEach((seg) => {
-    const n = seg.maxClicks || 1;
-    for (let i = 0; i < n; i++) steps.push(seg);
-  });
-
-  let playIndex = 0;
-  let playing = false;
-  let playTimer = null;
+  terminalEl.appendChild(controls);
 
   const startBtn = document.createElement("button");
-  startBtn.textContent = config.startLabel || "New Conversation";
   controls.appendChild(startBtn);
 
   const resetBtn = document.createElement("button");
@@ -120,81 +71,176 @@ window.createContextBar = function createContextBar(containerEl, config) {
   compactBtn.className = "context-bar-slash-btn";
   controls.appendChild(compactBtn);
 
-  function playNext() {
-    if (playIndex >= steps.length) {
-      playing = false;
-      startBtn.textContent = config.startLabel || "New Conversation";
-      return;
+  function addRow(html, cls) {
+    const row = document.createElement("div");
+    if (cls) row.className = cls;
+    row.innerHTML = html;
+    body.appendChild(row);
+    body.scrollTop = body.scrollHeight;
+    return row;
+  }
+
+  const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  const promptRow = (text) =>
+    addRow('<span class="prompt">&gt;</span>' + esc(text));
+
+  function showIdle() {
+    body.innerHTML = "";
+    addRow('<span class="prompt">PS&gt;</span>copilot<span class="cursor"></span>');
+  }
+
+  function showBanner() {
+    addRow("GitHub Copilot CLI", "terminal-title");
+  }
+
+  // ---- state / rendering ----
+  function totalPct() {
+    return Object.values(state).reduce((sum, s) => sum + s.pct, 0);
+  }
+
+  function render() {
+    const total = Math.min(100, totalPct());
+    readout.textContent = Math.round(total) + "% full";
+    config.segments.forEach((seg) => {
+      segmentEls[seg.key].style.height = state[seg.key].pct + "%";
+    });
+    const warnThreshold = config.warnThresholdPct || 90;
+    config.segments.forEach((seg) => {
+      segmentEls[seg.key].classList.toggle("warn", total >= warnThreshold);
+    });
+    if (typeof config.onUpdate === "function") config.onUpdate(total);
+  }
+
+  function logLines(seg) {
+    (seg.logLines || []).forEach((l) => addRow("● " + esc(l), "terminal-log"));
+  }
+
+  // Returns true if the step actually did something (already-loaded
+  // segments are skipped so there is no dead pause after /clear).
+  function applyStep(seg) {
+    const s = state[seg.key];
+    if (s.clicks >= (seg.maxClicks || 1)) return false;
+    s.clicks += 1;
+    s.pct = Math.min(100, s.pct + seg.incrementPct);
+    logLines(seg);
+    if (seg.transcriptTurns) {
+      const turn = seg.transcriptTurns[Math.min(s.clicks - 1, seg.transcriptTurns.length - 1)];
+      turn.forEach((line) => {
+        if (line.startsWith("User: ")) promptRow(line.slice(6));
+        else addRow("● " + esc(line.replace(/^Assistant: /, "")), "terminal-reply");
+      });
     }
-    applyStep(steps[playIndex]);
-    playIndex++;
+    render();
+    return true;
+  }
+
+  // Flatten segments into an ordered step queue (maxClicks > 1 — e.g.
+  // conversation turns — contributes one step per click/turn).
+  const steps = [];
+  config.segments.forEach((seg) => {
+    for (let i = 0; i < (seg.maxClicks || 1); i++) steps.push(seg);
+  });
+
+  let playIndex = 0;
+  let playing = false;
+  let started = false; // the CLI has been launched ("Enter" pressed once)
+  let playTimer = null;
+
+  function setLabel() {
+    startBtn.textContent = playing
+      ? "Pause"
+      : playIndex > 0 && playIndex < steps.length
+        ? "Resume"
+        : started
+          ? "New Conversation"
+          : "⏎ Enter";
+  }
+
+  function finish() {
+    playing = false;
+    setLabel();
+  }
+
+  function playNext() {
+    let applied = false;
+    while (playIndex < steps.length && !applied) {
+      applied = applyStep(steps[playIndex]);
+      playIndex++;
+    }
+    if (!applied || playIndex >= steps.length) return finish();
     playTimer = setTimeout(playNext, stepDelayMs);
   }
 
-  // One button: start / pause / resume (restarts cleanly after a finished run).
+  // One button: Enter / Pause / Resume / New Conversation.
   startBtn.addEventListener("click", () => {
     if (playing) {
       clearTimeout(playTimer);
       playing = false;
-      startBtn.textContent = "Resume";
+      setLabel();
       return;
     }
     if (playIndex >= steps.length) reset();
+    if (!started) {
+      started = true;
+      body.innerHTML = "";
+      addRow('<span class="prompt">PS&gt;</span>copilot');
+      showBanner();
+    }
     playing = true;
-    startBtn.textContent = "Pause";
+    setLabel();
     playNext();
   });
 
+  // /clear: wipes the conversation, but a fresh session immediately reloads
+  // the baseline (harness, AGENTS.md), so those segments stay filled.
   function reset() {
     if (playTimer) clearTimeout(playTimer);
     playing = false;
     playIndex = 0;
-    startBtn.disabled = false;
-    startBtn.textContent = config.startLabel || "New Conversation";
+    started = true;
     config.segments.forEach((seg) => {
-      // Segments marked persistOnClear (e.g. the harness, AGENTS.md) stay
-      // loaded — a new conversation still starts with that baseline context
-      // already in place, it isn't re-earned from zero.
-      if (!seg.persistOnClear) {
-        state[seg.key] = { pct: 0, clicks: 0 };
-      }
+      if (!seg.persistOnClear) state[seg.key] = { pct: 0, clicks: 0 };
     });
-    if (transcriptBody) transcriptBody.innerHTML = "";
+    body.innerHTML = "";
+    showBanner();
+    config.segments.forEach((seg) => {
+      if (seg.persistOnClear) logLines(seg);
+    });
+    setLabel();
     render();
   }
 
-  resetBtn.addEventListener("click", reset);
+  resetBtn.addEventListener("click", () => {
+    if (!started) return;
+    reset();
+  });
 
-  // Compaction summarizes accumulated conversation turns down to a small
-  // residual footprint — it helps, but doesn't erase the cost entirely
-  // (summarizing still takes some context, and nothing is ever perfectly free).
+  // /compact: summarizes the conversation down to a small residual — it
+  // helps, but the summary itself still costs context.
   function compact() {
     if (playing) return;
     let changed = false;
     config.segments.forEach((seg) => {
-      if (seg.transcriptTurns) {
-        const floor = seg.compactToPct != null ? seg.compactToPct : seg.incrementPct;
-        if (state[seg.key].pct > floor) {
-          state[seg.key].pct = floor;
-          changed = true;
-        }
+      if (!seg.transcriptTurns) return;
+      const floor = seg.compactToPct != null ? seg.compactToPct : seg.incrementPct;
+      if (state[seg.key].pct > floor) {
+        state[seg.key].pct = floor;
+        changed = true;
       }
     });
-    if (changed && transcriptBody) {
-      transcriptBody.innerHTML = "";
-      const row = document.createElement("div");
-      row.className = "terminal-reply";
-      row.style.fontStyle = "italic";
-      row.textContent = "— context compacted: earlier turns summarized —";
-      transcriptBody.appendChild(row);
-    }
-    if (changed) render();
+    if (!changed) return;
+    promptRow("/compact");
+    addRow("● Summarizing conversation history…", "terminal-log");
+    addRow("✓ Conversation compacted", "terminal-reply");
+    render();
   }
 
   compactBtn.addEventListener("click", compact);
 
   containerEl.appendChild(wrap);
+  showIdle();
+  setLabel();
   render();
 
-  return { reset, transcriptEl };
+  return { reset, terminalEl };
 };

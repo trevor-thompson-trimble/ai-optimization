@@ -25,11 +25,6 @@ window.createImpactMeters = function createImpactMeters(containerEl) {
     const row = document.createElement("div");
     row.className = "impact-meter";
 
-    const labelEl = document.createElement("div");
-    labelEl.className = "impact-meter-label";
-    labelEl.textContent = m.label;
-    row.appendChild(labelEl);
-
     const track = document.createElement("div");
     track.className = "impact-meter-track";
     const fill = document.createElement("div");
@@ -37,6 +32,11 @@ window.createImpactMeters = function createImpactMeters(containerEl) {
     fill.style.background = m.color;
     track.appendChild(fill);
     row.appendChild(track);
+
+    const labelEl = document.createElement("div");
+    labelEl.className = "impact-meter-label";
+    labelEl.textContent = m.label;
+    row.appendChild(labelEl);
 
     wrap.appendChild(row);
     fillEls[m.key] = fill;
@@ -47,7 +47,7 @@ window.createImpactMeters = function createImpactMeters(containerEl) {
   function update(totalPct) {
     meters.forEach((m) => {
       const value = Math.max(0, Math.round(m.curve(totalPct)));
-      fillEls[m.key].style.width = value + "%";
+      fillEls[m.key].style.height = value + "%";
     });
   }
 

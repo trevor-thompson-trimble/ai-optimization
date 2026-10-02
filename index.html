@@ -20,9 +20,13 @@
 
       <section>
         <h2>The Context Window</h2>
-        <div id="cb-intro"></div>
-        <div id="impact-meters"></div>
-        <div id="cb-transcript-slot"></div>
+        <div class="cb-layout">
+          <div id="cb-terminal-slot"></div>
+          <div class="cb-visuals">
+            <div id="cb-intro"></div>
+            <div id="impact-meters"></div>
+          </div>
+        </div>
       </section>
 
       <section>
@@ -118,7 +122,6 @@ description: Use when the user asks to format a report.
       const introBar = window.createContextBar(document.getElementById("cb-intro"), {
         capacityLabel: "Context Window (~128K tokens)",
         warnThresholdPct: 90,
-        startLabel: "New Conversation",
         stepDelayMs: 1400,
         onUpdate: (totalPct) => meters.update(totalPct),
         segments: [
@@ -129,7 +132,8 @@ description: Use when the user asks to format a report.
             tooltip: "System prompt, tool definitions, instructions",
             incrementPct: 20,
             maxClicks: 1,
-            persistOnClear: true
+            persistOnClear: true,
+            logLines: ["Loading system prompt & tools…"]
           },
           {
             key: "agentsmd",
@@ -138,7 +142,8 @@ description: Use when the user asks to format a report.
             tooltip: "Repo-level instructions the agent always reads",
             incrementPct: 15,
             maxClicks: 1,
-            persistOnClear: true
+            persistOnClear: true,
+            logLines: ["Loading AGENTS.md…"]
           },
           {
             key: "repo",
@@ -146,7 +151,8 @@ description: Use when the user asks to format a report.
             color: "var(--accent)",
             tooltip: "Files, repo structure, relevant code",
             incrementPct: 20,
-            maxClicks: 1
+            maxClicks: 1,
+            logLines: ["Reading repo files…"]
           },
           {
             key: "conversation",
@@ -166,9 +172,7 @@ description: Use when the user asks to format a report.
         ]
       });
 
-      if (introBar.transcriptEl) {
-        document.getElementById("cb-transcript-slot").appendChild(introBar.transcriptEl);
-      }
+      document.getElementById("cb-terminal-slot").appendChild(introBar.terminalEl);
     });
   </script>
 </body>
