@@ -44,56 +44,64 @@
       </section>
 
       <section>
-        <h2>AGENTS.md &amp; SKILL.md</h2>
-        <ul>
-          <li><code>AGENTS.md</code> — repo-level instructions the agent always reads</li>
-          <li><code>SKILL.md</code> — a packaged, reusable capability the agent can load on demand</li>
-        </ul>
+        <h2>AGENTS.md &amp; Skills</h2>
+        <div class="two-col">
+          <div>
+            <div class="keyword">Always on</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>AGENTS.md</em></div>
+              <div class="terminal-body">
+                <div><span class="prompt">#</span>Project rules</div>
+                <div>- Build: npm run build</div>
+                <div>- Tests: npm test</div>
+                <div>- Style: no default exports</div>
+                <div>- Never edit /generated</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="keyword">On demand</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>.copilot/skills/report/SKILL.md</em></div>
+              <div class="terminal-body">
+                <div>---</div>
+                <div>name: report</div>
+                <div>description: format a report</div>
+                <div>---</div>
+                <div><span class="prompt">1.</span>Read the input file</div>
+                <div><span class="prompt">2.</span>Apply the template</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section>
-        <h2>Example Layout</h2>
-        <pre class="mono"><code>repo/
-  AGENTS.md
-  .copilot/
-    skills/
-      my-skill/
-        SKILL.md
-        scripts/
-          helper.py
-</code></pre>
-      </section>
-
-      <section>
-        <h2>Example SKILL.md</h2>
-        <pre class="mono"><code>---
-name: my-skill
-description: Use when the user asks to format a report.
----
-
-# My Skill
-
-1. Read the input file.
-2. Apply the report template.
-3. Write the output next to the input.
-</code></pre>
-      </section>
-
-      <section>
-        <h2>Creating Your Own Skills</h2>
-        <ul>
-          <li>Start from a real, repeated task you do with the agent</li>
-          <li>Write the steps down as a short SKILL.md</li>
-          <li>Refine after watching the agent actually use it</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Finding Skills Online</h2>
-        <ul>
-          <li>Public skill repositories (e.g. community GitHub repos)</li>
-          <li>Copy, read, and adapt — don't trust blindly</li>
-        </ul>
+        <h2>Creating &amp; Finding Skills</h2>
+        <div class="two-col">
+          <div>
+            <div class="keyword">Create</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>PowerShell</em></div>
+              <div class="terminal-body">
+                <div><span class="prompt">1.</span>Notice a repeated task</div>
+                <div><span class="prompt">2.</span>Write it as a SKILL.md</div>
+                <div><span class="prompt">3.</span>Watch it run, then refine</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="keyword">Find</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>PowerShell</em></div>
+              <div class="terminal-body">
+                <div><span class="prompt">1.</span>Browse community repos</div>
+                <div><span class="prompt">2.</span>Copy into your repo</div>
+                <div><span class="prompt">3.</span>Read before you trust</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section>
