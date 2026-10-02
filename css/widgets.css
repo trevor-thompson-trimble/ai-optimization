@@ -66,7 +66,7 @@
 .cb-layout {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 1.2em;
   margin-top: 0.4em;
   text-align: left;
@@ -209,6 +209,10 @@
 
 @keyframes cb-blink {
   50% { opacity: 0; }
+}
+
+.cb-layout > #impact-meters {
+  display: flex;
 }
 
 .impact-meters-wrap {
