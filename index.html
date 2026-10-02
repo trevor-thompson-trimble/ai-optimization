@@ -48,7 +48,7 @@
         <ul>
           <li>Instructions your agent reads <strong>every session</strong></li>
         </ul>
-        <div class="terminal wide">
+        <div class="terminal wide dense">
           <div class="terminal-bar"><span></span><span></span><span></span><em>AGENTS.md</em></div>
           <div class="terminal-body">
             <div><span class="prompt">-</span>Be concise. No fluff.</div>
@@ -57,6 +57,9 @@
             <div><span class="prompt">-</span>Honest critique. Don't just agree.</div>
             <div><span class="prompt">-</span>TDD: tests before implementation.</div>
             <div><span class="prompt">-</span>Verify: run the tests before saying it's done.</div>
+            <div><span class="prompt">-</span>Match existing style. No new dependencies.</div>
+            <div><span class="prompt">-</span>Never commit secrets or credentials.</div>
+            <div><span class="prompt">-</span>Cite sources. Say so when unsure.</div>
           </div>
         </div>
       </section>
@@ -66,16 +69,55 @@
         <ul>
           <li>A reusable capability, loaded <strong>on demand</strong></li>
         </ul>
+        <div class="two-col">
+          <div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>model-picker/SKILL.md</em></div>
+              <div class="terminal-body">
+                <div>---</div>
+                <div>name: model-picker</div>
+                <div>description: Pick the right</div>
+                <div>&nbsp;&nbsp;model for the task</div>
+                <div>---</div>
+                <div><span class="prompt">1.</span>Read models.md</div>
+                <div><span class="prompt">2.</span>Match the task</div>
+                <div><span class="prompt">3.</span>Recommend a model</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>report/SKILL.md</em></div>
+              <div class="terminal-body">
+                <div>---</div>
+                <div>name: report</div>
+                <div>description: Format a report</div>
+                <div>&nbsp;</div>
+                <div>---</div>
+                <div><span class="prompt">1.</span>Read the input file</div>
+                <div><span class="prompt">2.</span>Apply the template</div>
+                <div><span class="prompt">3.</span>Write the output</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>File Structure</h2>
         <div class="terminal wide">
-          <div class="terminal-bar"><span></span><span></span><span></span><em>.copilot/skills/model-picker/SKILL.md</em></div>
+          <div class="terminal-bar"><span></span><span></span><span></span><em>PowerShell</em></div>
           <div class="terminal-body">
-            <div>---</div>
-            <div>name: model-picker</div>
-            <div>description: Pick the right model for the task</div>
-            <div>---</div>
-            <div><span class="prompt">1.</span>Read models.md (models, cost, strengths)</div>
-            <div><span class="prompt">2.</span>Match the task: edit, refactor, debug</div>
-            <div><span class="prompt">3.</span>Reply with the model to switch to, and why</div>
+            <div><span class="prompt">PS&gt;</span> tree /f</div>
+            <div>repo/</div>
+            <div>├─ AGENTS.md</div>
+            <div>└─ .copilot/</div>
+            <div>&nbsp;&nbsp;&nbsp;└─ skills/</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ model-picker/</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;├─ SKILL.md</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;└─ models.md</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ report/</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ SKILL.md</div>
           </div>
         </div>
       </section>

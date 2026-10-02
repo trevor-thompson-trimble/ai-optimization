@@ -40,6 +40,11 @@
   margin-top: 1.5em;
 }
 
+.terminal.wide.dense {
+  font-size: 0.54em;
+  margin-top: 0.8em;
+}
+
 .two-col .terminal {
   min-width: 0;
   width: auto;
