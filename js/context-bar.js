@@ -100,17 +100,14 @@ window.createContextBar = function createContextBar(containerEl, config) {
   startBtn.textContent = config.startLabel || "Start Conversation";
   controls.appendChild(startBtn);
 
-  const sep = document.createElement("span");
-  sep.className = "context-bar-sep";
-  sep.textContent = "//";
-  controls.appendChild(sep);
-
   const resetBtn = document.createElement("button");
-  resetBtn.textContent = "Clear";
+  resetBtn.textContent = "/clear";
+  resetBtn.className = "context-bar-slash-btn";
   controls.appendChild(resetBtn);
 
   const compactBtn = document.createElement("button");
-  compactBtn.textContent = config.compactLabel || "Compact Context";
+  compactBtn.textContent = "/compact";
+  compactBtn.className = "context-bar-slash-btn";
   controls.appendChild(compactBtn);
 
   function playNext() {
