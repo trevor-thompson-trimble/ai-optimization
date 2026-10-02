@@ -28,7 +28,8 @@
         <ul>
           <li>Every response resends the <strong>entire</strong> accumulated context as input — nothing is "remembered" between turns, it's rebuilt and resent each time</li>
           <li>The model doesn't selectively skim — all of it has to be processed and paid for, every single turn</li>
-          <li>Old, irrelevant junk piles up and dilutes the signal the model has to sift through to answer well</li>
+          <li><strong>Cost &amp; speed:</strong> scale with how much is in context — more tokens in, every turn, means more $ and more latency, well before the window is full</li>
+          <li><strong>Quality:</strong> old, irrelevant junk piles up and buries the signal — the model has more noise to sift through to find what's relevant</li>
           <li>Keeping context lean &#8594; faster, cheaper, sharper responses</li>
         </ul>
       </section>
