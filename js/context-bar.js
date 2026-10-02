@@ -37,13 +37,17 @@ window.createContextBar = function createContextBar(containerEl, config) {
   controls.className = "context-bar-controls";
   wrap.appendChild(controls);
 
-  let transcriptEl = null;
+  let transcriptEl = null; // outer terminal window, placed by the caller
+  let transcriptBody = null; // where lines are appended
   const hasTranscriptSegment = config.segments.some((s) => s.transcriptTurns);
   if (hasTranscriptSegment) {
     transcriptEl = document.createElement("div");
-    transcriptEl.className = "context-bar-transcript";
-    // Not appended here — the caller places it (e.g. below other widgets)
-    // via the returned `transcriptEl` reference.
+    transcriptEl.className = "terminal context-bar-transcript";
+    transcriptEl.innerHTML =
+      '<div class="terminal-bar"><span></span><span></span><span></span><em>copilot</em></div>';
+    transcriptBody = document.createElement("div");
+    transcriptBody.className = "terminal-body";
+    transcriptEl.appendChild(transcriptBody);
   }
 
   function totalPct() {
@@ -71,15 +75,21 @@ window.createContextBar = function createContextBar(containerEl, config) {
     if (s.clicks >= maxSteps) return;
     s.clicks += 1;
     s.pct = Math.min(100, s.pct + seg.incrementPct);
-    if (seg.transcriptTurns && transcriptEl) {
+    if (seg.transcriptTurns && transcriptBody) {
       const idx = Math.min(s.clicks - 1, seg.transcriptTurns.length - 1);
       const turn = seg.transcriptTurns[idx];
       turn.forEach((line) => {
-        const p = document.createElement("p");
-        p.textContent = line;
-        transcriptEl.appendChild(p);
+        const row = document.createElement("div");
+        if (line.startsWith("User: ")) {
+          row.innerHTML = '<span class="prompt">&gt;</span> ';
+          row.appendChild(document.createTextNode(line.slice(6)));
+        } else {
+          row.className = "terminal-reply";
+          row.textContent = line.replace(/^Assistant: /, "");
+        }
+        transcriptBody.appendChild(row);
       });
-      transcriptEl.scrollTop = transcriptEl.scrollHeight;
+      transcriptBody.scrollTop = transcriptBody.scrollHeight;
     }
     render();
   }
@@ -149,7 +159,7 @@ window.createContextBar = function createContextBar(containerEl, config) {
         state[seg.key] = { pct: 0, clicks: 0 };
       }
     });
-    if (transcriptEl) transcriptEl.innerHTML = "";
+    if (transcriptBody) transcriptBody.innerHTML = "";
     render();
   }
 
@@ -170,12 +180,13 @@ window.createContextBar = function createContextBar(containerEl, config) {
         }
       }
     });
-    if (changed && transcriptEl) {
-      transcriptEl.innerHTML = "";
-      const p = document.createElement("p");
-      p.style.fontStyle = "italic";
-      p.textContent = "— context compacted: earlier turns summarized —";
-      transcriptEl.appendChild(p);
+    if (changed && transcriptBody) {
+      transcriptBody.innerHTML = "";
+      const row = document.createElement("div");
+      row.className = "terminal-reply";
+      row.style.fontStyle = "italic";
+      row.textContent = "— context compacted: earlier turns summarized —";
+      transcriptBody.appendChild(row);
     }
     if (changed) render();
   }

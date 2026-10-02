@@ -143,23 +143,24 @@
 }
 
 .context-bar-transcript {
-  margin-top: 0.6em;
-  max-height: 140px;
-  overflow-y: auto;
-  font-family: monospace;
-  font-size: 0.4em;
-  background: #1b1e26;
-  border-radius: 4px;
-  padding: 0.5em;
-  text-align: left;
+  width: 100%;
+  min-width: 0;
+  margin-top: 0.4em;
+  font-size: 0.35em;
 }
 
-.context-bar-transcript:empty {
+.context-bar-transcript:has(.terminal-body:empty) {
   display: none;
 }
 
-.context-bar-transcript p {
-  margin: 0.2em 0;
+.context-bar-transcript .terminal-body {
+  height: 4.6em;
+  overflow-y: auto;
+}
+
+.terminal-reply {
+  color: #9aa0ab;
+  padding-left: 1.2em;
 }
 
 .impact-meters-wrap {
