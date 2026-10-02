@@ -23,6 +23,10 @@
   margin-top: 1.2em;
 }
 
+.tagline + .two-col {
+  margin-top: 0.4em;
+}
+
 .two-col > div {
   flex: 1;
   min-width: 0;
@@ -38,6 +42,24 @@
   width: 90%;
   font-size: 0.62em;
   margin-top: 1.5em;
+}
+
+.tagline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8em;
+  margin: 0.6em 0 0.4em;
+  font-size: 0.7em;
+  color: #9aa0ab;
+}
+
+.tagline .badge {
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  padding: 0.15em 0.9em;
+  font-weight: 700;
 }
 
 .terminal.wide.dense {
