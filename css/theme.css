@@ -25,3 +25,11 @@
 .reveal ul li {
   margin: 0.4em 0;
 }
+
+.reveal .slides > section:not(:first-child) > h2 {
+  margin-top: 0.3em;
+}
+
+.reveal .slides > section:first-child {
+  top: 35% !important;
+}
