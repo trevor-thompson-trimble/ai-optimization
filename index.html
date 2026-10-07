@@ -44,42 +44,6 @@
       </section>
 
       <section>
-        <h2>Modes: shift+tab</h2>
-        <div class="tagline"><span class="badge" data-tip="shift+tab cycles through the modes without typing a command">One key</span><span>Cycle between permission and plan modes</span></div>
-        <div class="two-col">
-          <div>
-            <div class="col-label">Permissions</div>
-            <div class="terminal">
-              <div class="terminal-bar"><span></span><span></span><span></span><em>/permissions</em></div>
-              <div class="terminal-body">
-                <div><span class="prompt">-</span>Ask every time</div>
-                <div><span class="prompt">-</span>Auto-approve edits</div>
-                <div><span class="prompt">-</span>Full auto (/allow-all)</div>
-                <div>● shift+tab cycles modes</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="col-label">Plan</div>
-            <div class="terminal">
-              <div class="terminal-bar"><span></span><span></span><span></span><em>/plan</em></div>
-              <div class="terminal-body">
-                <div><span class="prompt">&gt;</span>shift+tab → Plan</div>
-                <div>● Reads + thinks only</div>
-                <div>&nbsp;&nbsp;no edits yet</div>
-                <div><span class="prompt">-</span>Review before it codes</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="chips">
-          <span data-tip="You choose how much the agent may do without asking">Trust</span>
-          <span data-tip="Less approving and re-prompting once you're comfortable">Speed</span>
-          <span data-tip="Review the plan before any code is changed">Fewer surprises</span>
-        </div>
-      </section>
-
-      <section>
         <h2>AGENTS.md</h2>
         <div class="tagline"><span class="badge" data-tip="Loaded into context at the start of every session, so keep it short">Always on</span><span>Read at the start of every session</span></div>
         <div class="terminal wide dense">
@@ -239,7 +203,7 @@
       <section>
         <h2>Useful Slash Commands</h2>
         <div class="tagline"><span class="badge" data-tip="Ship with the CLI, with no setup needed">Built-in</span><span>Shortcuts baked into the CLI</span></div>
-        <div class="chips cmds big">
+        <div class="chips cmds spiral">
           <span data-tip="Pick the AI model for this session (or auto)">/model</span>
           <span data-tip="Run subagents in parallel on a big task">/fleet</span>
           <span data-tip="Choose what shows in the status line">/statusline</span>
@@ -252,6 +216,42 @@
           <span data-tip="See the changes made in this directory">/diff</span>
           <span data-tip="Add or check MCP servers">/mcp</span>
           <span data-tip="Pick up a previous session">/resume</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Modes: shift+tab</h2>
+        <div class="tagline"><span class="badge" data-tip="shift+tab cycles through the modes without typing a command">One key</span><span>Cycle between permission and plan modes</span></div>
+        <div class="two-col">
+          <div>
+            <div class="col-label">Permissions</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>/permissions</em></div>
+              <div class="terminal-body">
+                <div><span class="prompt">-</span>Ask every time</div>
+                <div><span class="prompt">-</span>Auto-approve edits</div>
+                <div><span class="prompt">-</span>Full auto (/allow-all)</div>
+                <div>● shift+tab cycles modes</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="col-label">Plan</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>/plan</em></div>
+              <div class="terminal-body">
+                <div><span class="prompt">&gt;</span>shift+tab → Plan</div>
+                <div>● Reads + thinks only</div>
+                <div>&nbsp;&nbsp;no edits yet</div>
+                <div><span class="prompt">-</span>Review before it codes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chips">
+          <span data-tip="You choose how much the agent may do without asking">Trust</span>
+          <span data-tip="Less approving and re-prompting once you're comfortable">Speed</span>
+          <span data-tip="Review the plan before any code is changed">Fewer surprises</span>
         </div>
       </section>
 
@@ -308,7 +308,45 @@
   <script src="js/context-bar.js"></script>
   <script src="js/impact-meters.js"></script>
   <script>
-    Reveal.initialize({ hash: true, controls: true, progress: true, center: false });
+    function layoutSpiral(root) {
+      const chips = Array.from(root.children).filter((el) => el.tagName === "SPAN");
+      if (root.dataset.laid || !chips.length || !chips[0].offsetWidth) return;
+      const cx = root.clientWidth / 2, cy = root.clientHeight / 2;
+      const gap = 14, placed = [];
+      const point = (t) => [cx + t * 12.5 * 2.6 * Math.cos(t), cy + t * 12.5 * Math.sin(t)];
+      let theta = 0;
+      chips.forEach((chip, i) => {
+        const w = chip.offsetWidth, h = chip.offsetHeight;
+        let [x, y] = [cx, cy];
+        if (i > 0) {
+          do {
+            theta += 0.04;
+            [x, y] = point(theta);
+          } while (placed.some((p) => Math.abs(p.x - x) < (p.w + w) / 2 + gap && Math.abs(p.y - y) < (p.h + h) / 2 + gap));
+        }
+        placed.push({ x, y, w, h });
+        chip.style.left = x - w / 2 + "px";
+        chip.style.top = y - h / 2 + "px";
+      });
+
+      // Faint guide line so the spiral shape reads clearly between the bubbles.
+      const pts = [];
+      for (let t = 0; t <= theta; t += 0.05) pts.push(point(t).join(","));
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("class", "spiral-guide");
+      svg.setAttribute("width", root.clientWidth);
+      svg.setAttribute("height", root.clientHeight);
+      svg.innerHTML = '<polyline points="' + pts.join(" ") + '" />';
+      root.prepend(svg);
+      root.dataset.laid = "1";
+    }
+
+    Reveal.initialize({ hash: true, controls: true, progress: true, center: false }).then(function () {
+      const root = document.querySelector(".chips.spiral");
+      const run = () => layoutSpiral(root);
+      Reveal.on("slidechanged", run);
+      run();
+    });
 
     document.addEventListener("DOMContentLoaded", function () {
       const meters = window.createImpactMeters(document.getElementById("impact-meters"));
