@@ -107,6 +107,7 @@
             <div>repo/</div>
             <div>├─ AGENTS.md</div>
             <div>└─ .copilot/</div>
+            <div>&nbsp;&nbsp;&nbsp;├─ mcp-config.json</div>
             <div>&nbsp;&nbsp;&nbsp;└─ skills/</div>
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ model-picker/</div>
             <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;├─ SKILL.md</div>
@@ -189,6 +190,51 @@
           </div>
         </div>
         <div class="chips"><span>Context cost</span><span>Trust</span></div>
+        <div class="footnote">User-level config: <code>~/.copilot/mcp-config.json</code> &nbsp;·&nbsp; Repo-level: <code>.copilot/mcp-config.json</code></div>
+      </section>
+
+      <section>
+        <h2>Useful Slash Commands</h2>
+        <div class="tagline"><span class="badge">Built-in</span><span>Shortcuts baked into the CLI</span></div>
+        <div class="three-col">
+          <div>
+            <div class="col-label">/model</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>copilot</em></div>
+              <div class="terminal-body">
+                <div><span class="prompt">&gt;</span>/model</div>
+                <div>● Pick a model for</div>
+                <div>&nbsp;&nbsp;this session</div>
+                <div><span class="prompt">-</span>auto picks for you</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="col-label">/fleet</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>copilot</em></div>
+              <div class="terminal-body">
+                <div><span class="prompt">&gt;</span>/fleet</div>
+                <div>● Parallel subagent</div>
+                <div>&nbsp;&nbsp;execution enabled</div>
+                <div><span class="prompt">-</span>split work, go fast</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="col-label">/statusline</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>copilot</em></div>
+              <div class="terminal-body">
+                <div><span class="prompt">&gt;</span>/statusline</div>
+                <div>● Configure status</div>
+                <div>&nbsp;&nbsp;line items</div>
+                <div><span class="prompt">-</span>model, cwd, usage</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chips"><span>/context</span><span>/usage</span><span>/review</span><span>/diff</span><span>/mcp</span></div>
       </section>
 
       <section>
