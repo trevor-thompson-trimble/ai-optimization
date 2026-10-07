@@ -135,6 +135,52 @@
       </section>
 
       <section>
+        <h2>MCP Servers</h2>
+        <div class="tagline"><span class="badge" data-tip="MCP servers add new tools the agent can call">Plug-ins</span><span>Connect your agent to outside tools</span></div>
+        <div class="three-col">
+          <div>
+            <div class="col-label">What</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>Model Context Protocol</em></div>
+              <div class="terminal-body">
+                <div>Agent</div>
+                <div><span class="prompt">↕</span>MCP server</div>
+                <div>Your tools + data</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="col-label">Setup</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>copilot</em></div>
+              <div class="terminal-body">
+                <div><span class="prompt">&gt;</span>/mcp add</div>
+                <div><span class="prompt">&gt;</span>/mcp show</div>
+                <div>● github  connected</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="col-label">Unlocks</div>
+            <div class="terminal">
+              <div class="terminal-bar"><span></span><span></span><span></span><em>examples</em></div>
+              <div class="terminal-body">
+                <div><span class="prompt">-</span>GitHub issues + PRs</div>
+                <div><span class="prompt">-</span>Live docs + web</div>
+                <div><span class="prompt">-</span>Databases</div>
+                <div><span class="prompt">-</span>Internal tools</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chips">
+          <span data-tip="Each server's tool definitions use context window space, even when unused">Context cost</span>
+          <span data-tip="Servers run with the access you give them, so only connect ones you trust">Trust</span>
+        </div>
+        <div class="footnote">User-level config: <code>~/.copilot/mcp-config.json</code> &nbsp;·&nbsp; Repo-level: <code>.copilot/mcp-config.json</code></div>
+      </section>
+
+      <section>
         <h2>File Structure</h2>
         <div class="terminal wide">
           <div class="terminal-bar"><span></span><span></span><span></span><em>PowerShell</em></div>
@@ -188,52 +234,6 @@
           <span data-tip="Independent tasks run at the same time instead of one after another">Speed</span>
           <span data-tip="Each agent handles one narrow job instead of everything at once">Focus</span>
         </div>
-      </section>
-
-      <section>
-        <h2>MCP Servers</h2>
-        <div class="tagline"><span class="badge" data-tip="MCP servers add new tools the agent can call">Plug-ins</span><span>Connect your agent to outside tools</span></div>
-        <div class="three-col">
-          <div>
-            <div class="col-label">What</div>
-            <div class="terminal">
-              <div class="terminal-bar"><span></span><span></span><span></span><em>Model Context Protocol</em></div>
-              <div class="terminal-body">
-                <div>Agent</div>
-                <div><span class="prompt">↕</span>MCP server</div>
-                <div>Your tools + data</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="col-label">Setup</div>
-            <div class="terminal">
-              <div class="terminal-bar"><span></span><span></span><span></span><em>copilot</em></div>
-              <div class="terminal-body">
-                <div><span class="prompt">&gt;</span>/mcp add</div>
-                <div><span class="prompt">&gt;</span>/mcp show</div>
-                <div>● github  connected</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="col-label">Unlocks</div>
-            <div class="terminal">
-              <div class="terminal-bar"><span></span><span></span><span></span><em>examples</em></div>
-              <div class="terminal-body">
-                <div><span class="prompt">-</span>GitHub issues + PRs</div>
-                <div><span class="prompt">-</span>Live docs + web</div>
-                <div><span class="prompt">-</span>Databases</div>
-                <div><span class="prompt">-</span>Internal tools</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="chips">
-          <span data-tip="Each server's tool definitions use context window space, even when unused">Context cost</span>
-          <span data-tip="Servers run with the access you give them, so only connect ones you trust">Trust</span>
-        </div>
-        <div class="footnote">User-level config: <code>~/.copilot/mcp-config.json</code> &nbsp;·&nbsp; Repo-level: <code>.copilot/mcp-config.json</code></div>
       </section>
 
       <section>
