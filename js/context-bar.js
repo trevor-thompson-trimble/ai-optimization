@@ -21,6 +21,9 @@ window.createContextBar = function createContextBar(containerEl, config) {
 
 
   const segmentEls = {};
+  const outerLabelEls = {};
+  const labelsRow = document.createElement("div");
+  labelsRow.className = "context-bar-outer-labels";
   config.segments.forEach((seg) => {
     const el = document.createElement("div");
     el.className = "context-bar-segment";
@@ -34,7 +37,17 @@ window.createContextBar = function createContextBar(containerEl, config) {
 
     track.appendChild(el);
     segmentEls[seg.key] = el;
+
+    // Segments too narrow for their name get the label below the bar instead.
+    const outer = document.createElement("span");
+    outer.className = "context-bar-outer-label";
+    outer.textContent = seg.label;
+    outer.style.color = seg.color;
+    outer.hidden = true;
+    labelsRow.appendChild(outer);
+    outerLabelEls[seg.key] = outer;
   });
+  wrap.appendChild(labelsRow);
 
   // ---- fake CLI terminal: log pane + context bar side by side, input bar below ----
   const term = document.createElement("div");
@@ -99,12 +112,29 @@ window.createContextBar = function createContextBar(containerEl, config) {
     return Object.values(state).reduce((sum, s) => sum + s.pct, 0);
   }
 
+  // Uses target widths (pct), not the animating on-screen width.
+  function placeLabels() {
+    const trackW = track.clientWidth;
+    let offsetPct = 0;
+    config.segments.forEach((seg) => {
+      const pct = state[seg.key].pct;
+      const inner = segmentEls[seg.key].firstChild;
+      const narrow = pct > 0 && trackW > 0 && (pct / 100) * trackW < inner.offsetWidth + 8;
+      inner.style.visibility = narrow ? "hidden" : "";
+      const outer = outerLabelEls[seg.key];
+      outer.hidden = !narrow;
+      outer.style.left = offsetPct + "%";
+      offsetPct += pct;
+    });
+  }
+
   function render() {
     const total = Math.min(100, totalPct());
     readout.textContent = "Context window — " + Math.round(total) + "% full";
     config.segments.forEach((seg) => {
       segmentEls[seg.key].style.width = state[seg.key].pct + "%";
     });
+    placeLabels();
     const warnThreshold = config.warnThresholdPct || 90;
     config.segments.forEach((seg) => {
       segmentEls[seg.key].classList.toggle("warn", total >= warnThreshold);

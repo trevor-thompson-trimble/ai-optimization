@@ -226,6 +226,20 @@
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
+.context-bar-outer-labels {
+  position: relative;
+  height: 1.5em;
+  margin-top: 0.2em;
+}
+
+.context-bar-outer-label {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .context-bar-segment.warn {
   animation: cb-flash 0.6s ease-in-out 2;
 }
