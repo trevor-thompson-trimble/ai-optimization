@@ -324,7 +324,7 @@
       const meters = window.createImpactMeters(document.getElementById("impact-meters"));
 
       const introBar = window.createContextBar(document.getElementById("cb-intro"), {
-        capacityLabel: "Context Window (~128K tokens)",
+        capacityLabel: "Context Window (size varies by model)",
         warnThresholdPct: 90,
         stepDelayMs: 1400,
         onUpdate: (totalPct) => meters.update(totalPct),
@@ -333,7 +333,7 @@
             key: "harness",
             label: "Harness",
             color: "var(--accent-3)",
-            tooltip: "System prompt, tool definitions, instructions",
+            tooltip: "System prompt + tool definitions (every MCP server adds more)",
             incrementPct: 20,
             maxClicks: 1,
             persistOnClear: true,
@@ -343,8 +343,8 @@
             key: "agentsmd",
             label: "AGENTS.md",
             color: "var(--accent-4)",
-            tooltip: "Repo-level instructions the agent always reads",
-            incrementPct: 15,
+            tooltip: "Repo-level instructions the agent always reads (keep it short)",
+            incrementPct: 5,
             maxClicks: 1,
             persistOnClear: true,
             logLines: ["Loading AGENTS.md…"]
@@ -353,17 +353,19 @@
             key: "repo",
             label: "Repo",
             color: "var(--accent)",
-            tooltip: "Files, repo structure, relevant code",
+            tooltip: "Files the agent reads and tool output, loaded as it explores",
             incrementPct: 20,
             maxClicks: 1,
+            compactable: true,
+            compactToPct: 5,
             logLines: ["Reading repo files…"]
           },
           {
             key: "conversation",
             label: "Conversation",
             color: "var(--accent-2)",
-            tooltip: "Chat turns accumulating",
-            incrementPct: 9,
+            tooltip: "Every prompt and reply stays in context, and is re-sent each turn",
+            incrementPct: 10,
             maxClicks: 5,
             transcriptTurns: [
               ["User: Can you fix this bug?", "Assistant: Sure, looking at the file now... fixed it."],

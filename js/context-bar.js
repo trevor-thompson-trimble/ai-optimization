@@ -222,7 +222,7 @@ window.createContextBar = function createContextBar(containerEl, config) {
     if (playing) return;
     let changed = false;
     config.segments.forEach((seg) => {
-      if (!seg.transcriptTurns) return;
+      if (!seg.transcriptTurns && !seg.compactable) return;
       const floor = seg.compactToPct != null ? seg.compactToPct : seg.incrementPct;
       if (state[seg.key].pct > floor) {
         state[seg.key].pct = floor;
@@ -231,7 +231,7 @@ window.createContextBar = function createContextBar(containerEl, config) {
     });
     if (!changed) return;
     promptRow("/compact");
-    addRow("● Summarizing conversation history…", "terminal-log");
+    addRow("● Summarizing history (chat + file reads)…", "terminal-log");
     addRow("✓ Conversation compacted", "terminal-reply");
     render();
     term.classList.add("flash");
