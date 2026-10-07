@@ -85,6 +85,40 @@
   font-weight: 700;
 }
 
+.chips.cmds {
+  flex-wrap: wrap;
+}
+
+.chips.cmds span {
+  position: relative;
+  cursor: help;
+}
+
+.chips.cmds span::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 0.5em);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 16em;
+  padding: 0.4em 0.8em;
+  border-radius: 6px;
+  background: #22262f;
+  border: 1px solid var(--accent);
+  color: #e8e9ed;
+  font-weight: 400;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+
+.chips.cmds span:hover::after {
+  opacity: 1;
+}
+
 .three-col {
   display: flex;
   gap: 1em;
