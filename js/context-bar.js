@@ -1,4 +1,4 @@
-// Context-window widget: a fake Copilot CLI terminal (log pane, vertical context
+// Context-window widget: a fake Copilot CLI terminal (log pane, horizontal context
 // bar, and an input bar holding the controls) built into containerEl. Returns { reset }.
 window.createContextBar = function createContextBar(containerEl, config) {
   const stepDelayMs = config.stepDelayMs || 1400;
