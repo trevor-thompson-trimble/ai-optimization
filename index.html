@@ -203,7 +203,7 @@
       <section>
         <h2>Useful Slash Commands</h2>
         <div class="tagline"><span class="badge" data-tip="Ship with the CLI, with no setup needed">Built-in</span><span>Shortcuts baked into the CLI</span></div>
-        <div class="chips cmds spiral">
+        <div class="chips cmds big">
           <span data-tip="Pick the AI model for this session (or auto)">/model</span>
           <span data-tip="Run subagents in parallel on a big task">/fleet</span>
           <span data-tip="Choose what shows in the status line">/statusline</span>
@@ -311,45 +311,7 @@
   <script src="js/context-bar.js"></script>
   <script src="js/impact-meters.js"></script>
   <script>
-    function layoutSpiral(root) {
-      const chips = Array.from(root.children).filter((el) => el.tagName === "SPAN");
-      if (root.dataset.laid || !chips.length || !chips[0].offsetWidth) return;
-      const cx = root.clientWidth / 2, cy = root.clientHeight / 2;
-      const gap = 14, placed = [];
-      const point = (t) => [cx + t * 12.5 * 2.6 * Math.cos(t), cy + t * 12.5 * Math.sin(t)];
-      let theta = 0;
-      chips.forEach((chip, i) => {
-        const w = chip.offsetWidth, h = chip.offsetHeight;
-        let [x, y] = [cx, cy];
-        if (i > 0) {
-          do {
-            theta += 0.04;
-            [x, y] = point(theta);
-          } while (placed.some((p) => Math.abs(p.x - x) < (p.w + w) / 2 + gap && Math.abs(p.y - y) < (p.h + h) / 2 + gap));
-        }
-        placed.push({ x, y, w, h });
-        chip.style.left = x - w / 2 + "px";
-        chip.style.top = y - h / 2 + "px";
-      });
-
-      // Faint guide line so the spiral shape reads clearly between the bubbles.
-      const pts = [];
-      for (let t = 0; t <= theta; t += 0.05) pts.push(point(t).join(","));
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("class", "spiral-guide");
-      svg.setAttribute("width", root.clientWidth);
-      svg.setAttribute("height", root.clientHeight);
-      svg.innerHTML = '<polyline points="' + pts.join(" ") + '" />';
-      root.prepend(svg);
-      root.dataset.laid = "1";
-    }
-
-    Reveal.initialize({ hash: true, controls: true, progress: true, center: false }).then(function () {
-      const root = document.querySelector(".chips.spiral");
-      const run = () => layoutSpiral(root);
-      Reveal.on("slidechanged", run);
-      run();
-    });
+    Reveal.initialize({ hash: true, controls: true, progress: true, center: false });
 
     document.addEventListener("DOMContentLoaded", function () {
       const meters = window.createImpactMeters(document.getElementById("impact-meters"));

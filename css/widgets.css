@@ -89,37 +89,14 @@
   flex-wrap: wrap;
 }
 
-/* Bubbles are positioned along an outward spiral by layoutSpiral() in index.html. */
-.chips.spiral {
-  display: block;
-  position: relative;
-  width: 900px;
-  height: 440px;
-  margin: 0.6em auto 0;
+.chips.cmds.big {
   font-size: 0.85em;
+  gap: 1.2em;
+  max-width: 820px;
+  margin: 2em auto 0;
 }
 
-.chips.spiral span {
-  position: absolute;
-  white-space: nowrap;
-  background: #15181f;
-}
-
-.spiral-guide {
-  position: absolute;
-  inset: 0;
-}
-
-.spiral-guide polyline {
-  fill: none;
-  stroke: var(--accent);
-  stroke-opacity: 0.25;
-  stroke-width: 2;
-  stroke-dasharray: 2 8;
-  stroke-linecap: round;
-}
-
-.chips.spiral span:hover {
+.chips.cmds.big span:hover {
   z-index: 20;
 }
 
@@ -160,7 +137,7 @@
 /* Bubbles near the top of a slide show the description below instead. */
 .tagline .badge[data-tip]::after,
 .keyword[data-tip]::after,
-.chips.spiral span[data-tip]::after {
+.chips.cmds.big span[data-tip]::after {
   bottom: auto;
   top: calc(100% + 0.5em);
 }
