@@ -29,9 +29,9 @@
       <section>
         <h2>The CLI Harness</h2>
         <div class="keywords">
-          <div class="keyword">Light</div>
-          <div class="keyword">Direct</div>
-          <div class="keyword">Visible</div>
+          <div class="keyword" data-tip="Runs right in your terminal, with no heavy app to install or open">Light</div>
+          <div class="keyword" data-tip="You talk straight to the agent, with no extra UI layers in between">Direct</div>
+          <div class="keyword" data-tip="Every tool call, file edit, and command shows up as it happens">Visible</div>
         </div>
         <div class="terminal">
           <div class="terminal-bar"><span></span><span></span><span></span><em>PowerShell</em></div>
@@ -45,7 +45,7 @@
 
       <section>
         <h2>Modes: shift+tab</h2>
-        <div class="tagline"><span class="badge">One key</span><span>Cycle between permission and plan modes</span></div>
+        <div class="tagline"><span class="badge" data-tip="shift+tab cycles through the modes without typing a command">One key</span><span>Cycle between permission and plan modes</span></div>
         <div class="two-col">
           <div>
             <div class="col-label">Permissions</div>
@@ -72,12 +72,16 @@
             </div>
           </div>
         </div>
-        <div class="chips"><span>Trust</span><span>Speed</span><span>Fewer surprises</span></div>
+        <div class="chips">
+          <span data-tip="You choose how much the agent may do without asking">Trust</span>
+          <span data-tip="Less approving and re-prompting once you're comfortable">Speed</span>
+          <span data-tip="Review the plan before any code is changed">Fewer surprises</span>
+        </div>
       </section>
 
       <section>
         <h2>AGENTS.md</h2>
-        <div class="tagline"><span class="badge">Always on</span><span>Read at the start of every session</span></div>
+        <div class="tagline"><span class="badge" data-tip="Loaded into context at the start of every session, so keep it short">Always on</span><span>Read at the start of every session</span></div>
         <div class="terminal wide dense">
           <div class="terminal-bar"><span></span><span></span><span></span><em>AGENTS.md</em></div>
           <div class="terminal-body">
@@ -96,7 +100,7 @@
 
       <section>
         <h2>SKILL.md</h2>
-        <div class="tagline"><span class="badge">On demand</span><span>Loaded only when the task needs it</span></div>
+        <div class="tagline"><span class="badge" data-tip="Only the name and description are visible up front; the full skill loads when the task matches">On demand</span><span>Loaded only when the task needs it</span></div>
         <div class="two-col">
           <div>
             <div class="terminal">
@@ -152,7 +156,7 @@
 
       <section>
         <h2>Multi-Agent</h2>
-        <div class="tagline"><span class="badge">Parallel</span><span>Split the work across agents</span></div>
+        <div class="tagline"><span class="badge" data-tip="Sub-agents work at the same time, each in its own context window">Parallel</span><span>Split the work across agents</span></div>
         <div class="two-col">
           <div>
             <div class="terminal">
@@ -179,12 +183,16 @@
             </div>
           </div>
         </div>
-        <div class="chips"><span>Context</span><span>Speed</span><span>Focus</span></div>
+        <div class="chips">
+          <span data-tip="Each sub-agent has its own context window, keeping the main one clean">Context</span>
+          <span data-tip="Independent tasks run at the same time instead of one after another">Speed</span>
+          <span data-tip="Each agent handles one narrow job instead of everything at once">Focus</span>
+        </div>
       </section>
 
       <section>
         <h2>MCP Servers</h2>
-        <div class="tagline"><span class="badge">Plug-ins</span><span>Connect your agent to outside tools</span></div>
+        <div class="tagline"><span class="badge" data-tip="MCP servers add new tools the agent can call">Plug-ins</span><span>Connect your agent to outside tools</span></div>
         <div class="three-col">
           <div>
             <div class="col-label">What</div>
@@ -221,57 +229,29 @@
             </div>
           </div>
         </div>
-        <div class="chips"><span>Context cost</span><span>Trust</span></div>
+        <div class="chips">
+          <span data-tip="Each server's tool definitions use context window space, even when unused">Context cost</span>
+          <span data-tip="Servers run with the access you give them, so only connect ones you trust">Trust</span>
+        </div>
         <div class="footnote">User-level config: <code>~/.copilot/mcp-config.json</code> &nbsp;·&nbsp; Repo-level: <code>.copilot/mcp-config.json</code></div>
       </section>
 
       <section>
         <h2>Useful Slash Commands</h2>
-        <div class="tagline"><span class="badge">Built-in</span><span>Shortcuts baked into the CLI</span></div>
-        <div class="three-col">
-          <div>
-            <div class="col-label">/model</div>
-            <div class="terminal">
-              <div class="terminal-bar"><span></span><span></span><span></span><em>copilot</em></div>
-              <div class="terminal-body">
-                <div><span class="prompt">&gt;</span>/model</div>
-                <div>● Pick a model for</div>
-                <div>&nbsp;&nbsp;this session</div>
-                <div><span class="prompt">-</span>auto picks for you</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="col-label">/fleet</div>
-            <div class="terminal">
-              <div class="terminal-bar"><span></span><span></span><span></span><em>copilot</em></div>
-              <div class="terminal-body">
-                <div><span class="prompt">&gt;</span>/fleet</div>
-                <div>● Parallel subagent</div>
-                <div>&nbsp;&nbsp;execution enabled</div>
-                <div><span class="prompt">-</span>split work, go fast</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="col-label">/statusline</div>
-            <div class="terminal">
-              <div class="terminal-bar"><span></span><span></span><span></span><em>copilot</em></div>
-              <div class="terminal-body">
-                <div><span class="prompt">&gt;</span>/statusline</div>
-                <div>● Configure status</div>
-                <div>&nbsp;&nbsp;line items</div>
-                <div><span class="prompt">-</span>model, cwd, usage</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="chips cmds">
+        <div class="tagline"><span class="badge" data-tip="Ship with the CLI, with no setup needed">Built-in</span><span>Shortcuts baked into the CLI</span></div>
+        <div class="chips cmds big">
+          <span data-tip="Pick the AI model for this session (or auto)">/model</span>
+          <span data-tip="Run subagents in parallel on a big task">/fleet</span>
+          <span data-tip="Choose what shows in the status line">/statusline</span>
           <span data-tip="Show how full the context window is">/context</span>
           <span data-tip="Summarize history to free up context">/compact</span>
           <span data-tip="Start fresh with an empty conversation">/clear</span>
           <span data-tip="Undo the last turn and its file changes">/rewind</span>
+          <span data-tip="Create a plan before any code is written">/plan</span>
           <span data-tip="Run the code review agent on your changes">/review</span>
+          <span data-tip="See the changes made in this directory">/diff</span>
+          <span data-tip="Add or check MCP servers">/mcp</span>
+          <span data-tip="Pick up a previous session">/resume</span>
         </div>
       </section>
 
@@ -314,7 +294,11 @@
             </div>
           </div>
         </div>
-        <div class="chips"><span>Cost</span><span>Speed</span><span>Quality</span></div>
+        <div class="chips">
+          <span data-tip="Bigger models and longer sessions cost more">Cost</span>
+          <span data-tip="Smaller models and tighter context respond faster">Speed</span>
+          <span data-tip="Clear goals, the right model, and verification give better results">Quality</span>
+        </div>
       </section>
 
     </div>

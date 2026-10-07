@@ -89,25 +89,36 @@
   flex-wrap: wrap;
 }
 
-.chips.cmds span {
+.chips.cmds.big {
+  font-size: 0.85em;
+  gap: 1.2em 1.2em;
+  max-width: 820px;
+  margin: 2em auto 0;
+}
+
+/* Hover descriptions: any bubble with a data-tip attribute. */
+[data-tip] {
   position: relative;
   cursor: help;
 }
 
-.chips.cmds span::after {
+[data-tip]::after {
   content: attr(data-tip);
   position: absolute;
   bottom: calc(100% + 0.5em);
   left: 50%;
   transform: translateX(-50%);
   width: max-content;
-  max-width: 16em;
+  max-width: 320px;
   padding: 0.4em 0.8em;
   border-radius: 6px;
   background: #22262f;
   border: 1px solid var(--accent);
   color: #e8e9ed;
+  font-size: 20px;
   font-weight: 400;
+  font-style: normal;
+  line-height: 1.3;
   text-align: center;
   opacity: 0;
   pointer-events: none;
@@ -115,8 +126,16 @@
   z-index: 10;
 }
 
-.chips.cmds span:hover::after {
+[data-tip]:hover::after {
   opacity: 1;
+}
+
+/* Bubbles near the top of a slide show the description below instead. */
+.tagline .badge[data-tip]::after,
+.keyword[data-tip]::after,
+.chips.cmds.big span::after {
+  bottom: auto;
+  top: calc(100% + 0.5em);
 }
 
 .three-col {
